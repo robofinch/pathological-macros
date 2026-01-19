@@ -1,0 +1,14 @@
+[package]
+name         = "solution-against-pathological"
+authors      = ["Finley Huggins"]
+description  = "testing solution-macro against pathological-macro"
+version      = "0.1.0"
+publish      = false
+edition      .workspace = true
+rust-version .workspace = true
+repository   .workspace = true
+license      .workspace = true
+
+[dependencies]
+pathological-macro.workspace = true
+solution-macro.workspace = true

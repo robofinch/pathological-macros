@@ -1,0 +1,16 @@
+[package]
+name         = "solution-macro"
+authors      = ["Finley Huggins"]
+description  = "improved macro for derive(Yokeable)"
+version      = "0.1.0"
+publish      = false
+edition      .workspace = true
+rust-version .workspace = true
+repository   .workspace = true
+license      .workspace = true
+
+[lib]
+proc-macro = true
+
+[dependencies]
+quote.workspace = true

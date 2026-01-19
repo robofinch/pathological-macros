@@ -1,0 +1,22 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/pathological-macro",
+    "crates/solution-against-normal",
+    "crates/solution-against-pathological",
+    "crates/solution-macro",
+    "crates/yoke-problem"
+]
+
+[workspace.package]
+edition      = "2024"
+rust-version = "1.92"
+repository   = "https://github.com/robofinch/pathological-macros"
+license      = "MIT OR Apache-2.0"
+
+[workspace.dependencies]
+pathological-macro = { version = "0.1.0", path = "crates/pathological-macro" }
+solution-macro     = { version = "0.1.0", path = "crates/solution-macro"     }
+
+quote       = "1.0.43"
+yoke        = { version = "=0.8.1", features = ["derive"] }
