@@ -1,7 +1,6 @@
 use proc_macro2::Span;
 use syn::{Ident, Lifetime, Type};
 
-
 pub fn static_lt() -> Lifetime {
     Lifetime::new("'static", Span::call_site())
 }
@@ -32,6 +31,7 @@ pub fn replace_lifetime(lt_param: &Ident, x: &Type, lt: Lifetime) -> Type {
 mod tests {
     use proc_macro2::Span;
     use syn::{Ident, parse_quote};
+
     use super::{custom_lt, replace_lifetime};
 
     fn a_ident() -> Ident {
@@ -64,7 +64,11 @@ mod tests {
         );
 
         assert_eq!(
-            replace_lifetime(&b_ident(), &parse_quote!(for<'a> fn(fn(Foo<'a, 'b, T>))), custom_lt("'c")),
+            replace_lifetime(
+                &b_ident(),
+                &parse_quote!(for<'a> fn(fn(Foo<'a, 'b, T>))),
+                custom_lt("'c"),
+            ),
             parse_quote!(for<'a> fn(fn(Foo<'a, 'c, T>))),
         );
     }

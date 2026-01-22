@@ -9,7 +9,7 @@ use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
 use quote::quote;
 use syn::spanned::Spanned;
-use syn::{parse_macro_input, parse_quote, DeriveInput, Ident, WherePredicate};
+use syn::{DeriveInput, Ident, WherePredicate, parse_macro_input, parse_quote};
 use synstructure::Structure;
 
 use self::lifetimes::{custom_lt, replace_lifetime, static_lt};
@@ -228,13 +228,11 @@ fn yokeable_derive_impl(input: &DeriveInput) -> TokenStream2 {
 
                 if has_lt {
                     let fty_a = replace_lifetime(lt_param, &field.ty, custom_lt("'a"));
-                    yoke_bounds.push(
-                        parse_quote!(#fty_static: yoke::Yokeable<'a, Output = #fty_a>),
-                    );
+                    yoke_bounds
+                        .push(parse_quote!(#fty_static: yoke::Yokeable<'a, Output = #fty_a>));
                 } else {
-                    yoke_bounds.push(
-                        parse_quote!(#fty_static: yoke::Yokeable<'a, Output = #fty_static>),
-                    );
+                    yoke_bounds
+                        .push(parse_quote!(#fty_static: yoke::Yokeable<'a, Output = #fty_static>));
                 }
             }
         }

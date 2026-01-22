@@ -4,9 +4,7 @@ use yoke::{Yoke, Yokeable};
 
 use pathological_macro::{Foo, transform_to_invariant};
 
-
-#[derive(Foo)]
-#[derive(Yokeable)]
+#[derive(Foo, Yokeable)]
 // Change `&'a Covariant<'a>` to `&'a Invariant<'a>` after `derive(Yokeable)`
 // has already been run/expanded, so that its manual covariance checks are flawed.
 #[transform_to_invariant]
@@ -54,14 +52,10 @@ impl<'a> Deref for Covariant<'a> {
 }
 
 fn main() {
-    let yoke: Yoke<MightLookCovariant<'static>, Rc<&str>> = Yoke::attach_to_cart(
-        Rc::new("hi"),
-        |_source| {
-            MightLookCovariant {
-                transformed_to_invariant: Box::leak(Box::new(Invariant::new_invariant())),
-            }
-        },
-    );
+    let yoke: Yoke<MightLookCovariant<'static>, Rc<&str>> =
+        Yoke::attach_to_cart(Rc::new("hi"), |_source| MightLookCovariant {
+            transformed_to_invariant: Box::leak(Box::new(Invariant::new_invariant())),
+        });
 
     {
         let short_lived = String::from("goodbye, world");

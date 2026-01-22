@@ -9,7 +9,7 @@
 //! compiler errors, not unsoundness.
 
 use std::collections::HashSet;
-use syn::visit::{visit_lifetime, visit_type, visit_type_path, Visit};
+use syn::visit::{Visit, visit_lifetime, visit_type, visit_type_path};
 use syn::{Ident, Lifetime, Type, TypePath};
 
 struct TypeVisitor<'a> {
@@ -60,9 +60,10 @@ pub fn check_type_for_parameters(ty: &Type, typarams: &HashSet<Ident>) -> (bool,
 mod tests {
     use proc_macro2::Span;
     use std::collections::HashSet;
-    use syn::{parse_quote, Ident};
+    use syn::{Ident, parse_quote};
 
     use super::check_type_for_parameters;
+
     fn make_typarams(params: &[&str]) -> HashSet<Ident> {
         params
             .iter()
