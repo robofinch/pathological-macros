@@ -1,22 +1,37 @@
+/// The below is a compile_fail doctest.
+///
+/** ```compile_fail
 use std::{cell::Cell, marker::PhantomData, ops::Deref, rc::Rc};
 
 use yoke::{Yoke, Yokeable};
 
-use pathological_macro::{Foo, transform_to_invariant};
 
+macro_rules! transform_to_invariant {
+    (&$lt:lifetime Covariant<$lifetime:lifetime>) => {
+        &$lifetime Invariant<$lifetime>
+    };
+}
 
-#[derive(Foo)]
+// This fails to compile because `derive(Yokeable)` fails to identify that
+// `transform_to_invariant`'s output involves the `'a` lifetime. Even if you get it to
+// recognize that the `transformed_to_invariant` field uses `'a`, it tries to change the
+// `'a` lifetime to `'static` and require that the modified type implements `Yokeable`;
+// but that fails.
+//
+// Essentially... ** macro types are required to be `'static` by `derive(Yokeable)` **.
+//
+// Even if non-`'static` macro types did work, a pure macro type would be recognized as invariant
+// and therefore fail.
+// A tuned nonpure proc macro (using some method to output something different each time it's
+// called) would, in theory, still be able to cause unsoundness.
 #[derive(Yokeable)]
-// Change `&'a Covariant<'a>` to `&'a Invariant<'a>` after `derive(Yokeable)`
-// has already been run/expanded, so that its manual covariance checks are flawed.
-#[transform_to_invariant]
 // Rely on `derive(Yokeable)`'s flawed checks for covariance instead of the compiler's unevadable
 // checks for covariance.
-// Also, this shows off how `yoke-derive` checks for any attribute whose body is
-// `prove_covariance_manually`, not just `yoke(prove_covariance_manually)`.
-#[foo(prove_covariance_manually)]
+#[yoke(prove_covariance_manually)]
 struct MightLookCovariant<'a> {
-    transformed_to_invariant: &'a Covariant<'a>,
+    // Change `&'a Covariant<'a>` to `&'a Invariant<'a>` after `derive(Yokeable)`
+    // has already been run/expanded, so that its manual covariance checks are flawed.
+    transformed_to_invariant: transform_to_invariant!(&'a Covariant<'a>),
 }
 
 // We somehow manage to dodge the problems caused by autoderef cycles.
@@ -71,3 +86,6 @@ fn main() {
     // use-after-free
     println!("{}", yoke.get().transformed_to_invariant.1.get());
 }
+``` */
+#[expect(dead_code)]
+const UNSUPPORTED: () = ();

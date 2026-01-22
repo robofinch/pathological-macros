@@ -10,3 +10,8 @@ pub fn transform_to_invariant(_: TokenStream, _: TokenStream) -> TokenStream {
         }
     }.into()
 }
+
+#[proc_macro_derive(Foo, attributes(foo))]
+pub fn foo(_input: TokenStream) -> TokenStream {
+    TokenStream::new()
+}

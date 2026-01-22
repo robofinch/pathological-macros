@@ -4,10 +4,12 @@ authors      = ["Finley Huggins"]
 description  = "testing solution-macro against normal scenarios"
 version      = "0.1.0"
 publish      = false
-edition      .workspace = true
-rust-version .workspace = true
+edition      = "2021"
 repository   .workspace = true
-license      .workspace = true
+rust-version = "1.85"
+license      = "Unicode-3.0"
 
 [dependencies]
 solution-macro.workspace = true
+yoke.workspace = true
+zerovec.workspace = true

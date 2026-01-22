@@ -1,12 +1,16 @@
+/// The below is a compile_fail doctest.
+///
+/** ```compile_fail
 use std::{cell::Cell, marker::PhantomData, ops::Deref, rc::Rc};
 
-use yoke::{Yoke, Yokeable};
+use yoke::Yoke;
 
 use pathological_macro::{Foo, transform_to_invariant};
+use solution_macro::YokeableDeriveFixed;
 
 
 #[derive(Foo)]
-#[derive(Yokeable)]
+#[derive(YokeableDeriveFixed)]
 // Change `&'a Covariant<'a>` to `&'a Invariant<'a>` after `derive(Yokeable)`
 // has already been run/expanded, so that its manual covariance checks are flawed.
 #[transform_to_invariant]
@@ -71,3 +75,6 @@ fn main() {
     // use-after-free
     println!("{}", yoke.get().transformed_to_invariant.1.get());
 }
+``` */
+#[expect(dead_code)]
+const SOLUTION_SUCCESSFULLY_REJECTS_INVARIANCE: () = ();

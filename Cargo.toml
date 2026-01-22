@@ -5,7 +5,8 @@ members = [
     "crates/solution-against-normal",
     "crates/solution-against-pathological",
     "crates/solution-macro",
-    "crates/yoke-problem"
+    "crates/yoke-problem",
+    "crates/yoke-unsupported"
 ]
 
 [workspace.package]
@@ -18,5 +19,9 @@ license      = "MIT OR Apache-2.0"
 pathological-macro = { version = "0.1.0", path = "crates/pathological-macro" }
 solution-macro     = { version = "0.1.0", path = "crates/solution-macro"     }
 
-quote       = "1.0.43"
-yoke        = { version = "=0.8.1", features = ["derive"] }
+proc-macro2  = "1.0.105"
+quote        = "1.0.43"
+syn          = "2.0.114"
+synstructure = "0.13.2"
+yoke         = { version = "=0.8.1", features = ["derive"] }
+zerovec      = { version = "0.11.5", default-features = false, features = ["alloc", "yoke"]}

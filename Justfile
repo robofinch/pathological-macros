@@ -42,13 +42,13 @@ find-unsafe-code: (rg-maybe-no-match '"unsafe_code|unsafe"')
 # ================================================================
 
 check *args:
-    cargo +stable hack clippy --feature-powerset {{args}}
+    cargo +stable hack clippy --rust-version --feature-powerset {{args}}
 
 clippy *args:
-    cargo +stable hack clippy --feature-powerset {{args}}
+    cargo +stable hack clippy --rust-version --feature-powerset {{args}}
 
 test *args:
-    cargo +stable hack test --feature-powerset {{args}}
+    cargo +stable hack test --rust-version --feature-powerset {{args}}
 
 show-yoke-ub *args:
     cargo +nightly-2026-01-18 miri run --package yoke-problem {{args}}
